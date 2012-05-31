@@ -1,6 +1,7 @@
 class VimeoGrabber {
   //variables
   String userPhoto = " ";
+  String userName = " ";
   String userID = " ";
   String user = " ";
   String url = "xmldocument.xml"; 
@@ -13,6 +14,11 @@ class VimeoGrabber {
   String getuserPhoto() {
 println(userPhoto);
     return userPhoto;
+  }
+  
+  String getuserName() {
+println(userName);
+    return userName;
   }
 
   String getUser() {
@@ -45,17 +51,17 @@ println(userPhoto);
   void requestImage(String tempuser) {
     user = tempuser;
     println(user);
-    if (user.equals("3688170632")) {
-      user = "calli";
-    }
-    if (user.equals("3664708744")) {
-      user = "imagima";
-    }
+//    if (user.equals("3688170632")) {
+//      user = "calli";
+//    }
+//    if (user.equals("3664708744")) {
+//      user = "imagima";
+//    }
 
     //Get all the HTML/XML source code into an array of strings
     //EVENTUALLY PUT IN A PROXY!!
 
-    String url ="http://vimeo.com/api/v2/" + user + "/info.xml";
+    String url ="http://vimeo.com/api/rfid/" + user;
     println(url);
     
     String[] lines = loadStrings(url);
@@ -64,9 +70,14 @@ println(userPhoto);
     String feed = join(lines, " ");
 
     // Searching for thumbnail link
-    String lookfor ="<portrait_large>";
-    String end = "</portrait_large>";
-    userPhoto = giveMeTextBetween(feed, lookfor, end);
+    String lookfor1 ="<portrait_large>";
+    String end1 = "</portrait_large>";
+    userPhoto = giveMeTextBetween(feed, lookfor1, end1);
+    
+    // Searching for thumbnail link
+    String lookfor2 ="<display_name>";
+    String end2 = "</display_name>";
+    userName = giveMeTextBetween(feed, lookfor2, end2);
   }
 
   // A function that returns a substring between two substrings

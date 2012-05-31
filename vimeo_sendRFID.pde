@@ -14,6 +14,7 @@ String id = "";
 String lastId = "";
 VimeoGrabber grab;
 String user;
+String username;
 
 void setup() {
   size(640, 360);
@@ -36,7 +37,7 @@ void setup() {
   //  myRemoteLocationC = new NetAddress("localhost", 12346);
 
   // My Laptop
-  myRemoteLocation = new NetAddress("127.0.0.1", 9003);
+  myRemoteLocation = new NetAddress("127.0.0.1", 12346);
 
 
 
@@ -62,6 +63,7 @@ void keyPressed() {
 
   if ( (key > 47 && key < 58) || (key > 64 && key < 91) ) id += key;
   else if (keyCode == ENTER ) {
+    //change to a delay instead of double read
     if (!id.equals(lastId) && id.length() == 10) { // prevents double/bad reads
       newId();
     }
@@ -94,8 +96,10 @@ void newId() {
   println("current id: " + id + " " + id.length());
   grab.requestImage(id);
   user = grab.getuserPhoto();
+  username = grab.getuserName();
   OscMessage myMessage = new OscMessage("/user");
   myMessage.add(user);
+  myMessage.add(username);
   oscP5.send(myMessage, myRemoteLocation); 
   lastId = id;
 }
